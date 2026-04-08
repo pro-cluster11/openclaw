@@ -117,6 +117,7 @@ RUN printf 'packages:\n  - .\n  - ui\n' > /tmp/pnpm-workspace.runtime.yaml && \
     cp /tmp/pnpm-workspace.runtime.yaml pnpm-workspace.yaml && \
     CI=true NPM_CONFIG_FROZEN_LOCKFILE=false pnpm prune && \
     find dist -type f \( -name '*.d.ts' -o -name '*.d.mts' -o -name '*.d.cts' -o -name '*.map' \) -delete
+RUN node -e "const fs = require('fs'); const path = require('path'); const stampPath = path.join('/app/dist', '.buildstamp'); fs.writeFileSync(stampPath, JSON.stringify({ head: 'docker-build' }));"
 
 # ── Runtime base images ─────────────────────────────────────────
 FROM ${OPENCLAW_NODE_BOOKWORM_IMAGE} AS base-default
