@@ -267,10 +267,9 @@ HEALTHCHECK --interval=3m --timeout=10s --start-period=15s --retries=3 \
   CMD node -e "fetch('http://127.0.0.1:18789/healthz').then((r)=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
 
 USER root
-RUN mkdir -p /home/node/.openclaw /home/node/workspace && \
-    chown -R node:node /home/node
-
-# Switch back to node user if the app requires it
+# Create the directory and set ownership
+RUN mkdir -p /data && chown -R node:node /data
+# Switch back to the non-privileged user
 USER node
 
 CMD ["node", "openclaw.mjs", "gateway", "--allow-unconfigured"]
